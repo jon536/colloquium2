@@ -1,4 +1,4 @@
-package ru.ifmo.md.colloquium2;
+package ru.eugene.colloquium2;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
