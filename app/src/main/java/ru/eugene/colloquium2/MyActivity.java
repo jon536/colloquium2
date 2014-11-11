@@ -58,16 +58,13 @@ public class MyActivity extends ListActivity implements LoaderManager.LoaderCall
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         empty.add("Add new candidate");
-        emptyArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, empty);
-        listView = getListView();
-        context = this;
+        emptyArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, empty); listView = getListView(); context = this;
 
         db = new DbHelper(this);
         database = db.getWritableDatabase();
         sourceItem = new DataSourceItem(database);
         candidates = sourceItem.read();
         fromCandidatesToLists();
-//        setMenu(menu);
 
         Log.i("LOG", "in on Create : " + isVoted);
         if (isEmpty()) {
@@ -97,7 +94,6 @@ public class MyActivity extends ListActivity implements LoaderManager.LoaderCall
                 }
             }
         });
-        Log.i("LOG", "after on Create");
 
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
@@ -159,7 +155,6 @@ public class MyActivity extends ListActivity implements LoaderManager.LoaderCall
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
-        Log.i("LOG", isVoted + "");
         setMenu(menu);
     }
 
@@ -201,7 +196,6 @@ public class MyActivity extends ListActivity implements LoaderManager.LoaderCall
                 vote.putIntegerArrayListExtra("votes", votes);
                 startActivityForResult(vote, CHANGE_ITEM_VOTE);
                 boolean result = sourceItem.insert(new Item(-1));
-                Log.i("LOG", "result " + result);
                 isVoted = true;
                 setMenu(menu);
                 break;
@@ -281,7 +275,6 @@ public class MyActivity extends ListActivity implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<List<Item>> loader, List<Item> data) {
-        Log.i("LOG", "+++ onLoadFinished() called! +++");
         if (data.size() > 0) {
             candidates.clear();
             for (Item item : data) {
@@ -307,11 +300,23 @@ public class MyActivity extends ListActivity implements LoaderManager.LoaderCall
 
     @Override
     public void onDestroy() {
+        Log.i("LOG", "in  destroy");
         super.onDestroy();
         db.close();
         database.close();
         db = null;
         database = null;
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Read values from the "savedInstanceState"-object and put them in your textview
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Save the values you need from your textview into "outState"-object
+        super.onSaveInstanceState(outState);
     }
 }
 

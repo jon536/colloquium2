@@ -76,7 +76,6 @@ public class DataSourceItem extends DataSource<Item> {
             }
             cursor.close();
         }
-        Log.i("LOG", "read");
 
         return result;
     }
